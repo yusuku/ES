@@ -16,3 +16,27 @@
 
 
 ## 光源推定コード
+### CPURunEstimation.cs
+
+入力360度画像から光源の方向、強さ、色を計算する
+
+
+### CPURunEstimation.compute
+
+入力画像をcomputeshader を使用しHDR画像に変換する
+
+### ワークフロー
+360度カメラからの入力をobsに表示する。
+
+表示したものをndi通信でunity内のRenderTextureに反映。
+
+このRenderTextureをCPURunEstimation.csの入力として受け取る
+
+#### CPURunEstimation.csのワークフロー
+入力RenderTextureをCPURunEstimation.computeを使用してHDR画像に変える。
+
+
+
+
+
+

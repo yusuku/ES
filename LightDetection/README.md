@@ -34,12 +34,23 @@
 
 #### CPURunEstimation.csの光源推定Estimation()ワークフロー
 
-Estimation()が入力画像LDRtexを使用し、光源の極座標polar
+Estimation()が入力画像LDRtexを使用し、閾値処理により光源ピクセルを決定し、光源の極座標polar、放射輝度Elを出力する
 
 ##### Inverse Tone Mapping
 入力RenderTextureをCPURunEstimation.computeを使用してHDR画像に変える。
-##### Breath first Search
 
+##### Thresholding approach
+全ピクセルの輝度を計算し、全ピクセル輝度の平均、分散を計算する。
+
+輝度の閾値=平均+2*分散
+
+として、閾値を決定し、以降この値以上の輝度を持つピクセルを光源のピクセルとする
+
+##### Breath first Search
+幅優先探索で輝度の閾値以上のピクセルの連結成分を抽出し、各連結成分をそれぞれ異なる一つの光源からくるものとする。
+
+##### Pixel Irradiance,Lights irradiance
+入力画像がEquirectangular projectionで　球形の360度画像を2D画像に投影していることを考慮し、各ピクセルの立体角を計算し、
 ##### Light's position
 
 

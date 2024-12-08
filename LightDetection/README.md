@@ -32,11 +32,18 @@
 
 このRenderTextureをCPURunEstimation.csの入力として受け取る
 
-#### CPURunEstimation.csのワークフロー
+#### CPURunEstimation.csの光源推定Estimation()ワークフロー
+
+Estimation()が入力画像LDRtexを使用し、光源の極座標polar
+
+##### Inverse Tone Mapping
 入力RenderTextureをCPURunEstimation.computeを使用してHDR画像に変える。
+##### Breath first Search
+
+##### Light's position
 
 
 
-
+EstiVales estivlaues = new　EstiVales(PolarPosion, Els);
 
 

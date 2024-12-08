@@ -1,6 +1,14 @@
 
 ## 光源推定結果
 
+### テスト動画
+![スクリーンショット 2024-12-08 174258](https://github.com/user-attachments/assets/91687edc-0149-4362-9843-5175be012351)
+
+動画
+https://www.youtube.com/shorts/Rb0cueQHbfk
+
+動かしている照明に対応してリアルタイムに影が出ている
+
 ### 計算結果の画像表示
 
 <img src="https://github.com/user-attachments/assets/16df062e-9c6f-45d9-a8be-e5984a7fdc39" width="300">

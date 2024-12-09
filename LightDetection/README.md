@@ -46,4 +46,8 @@ https://www.youtube.com/shorts/Rb0cueQHbfk
 
 6. 以下、１～５の繰り返し
 
+   光源推定関数Estimationは先行研究[1]をそのままC#で書いている
+
+# 光源推定先行研究
+[1] Taehyun Rhee, Member, IEEE, Lohit Petikam, Benjamin Allen, and Andrew Chalmers,MR360: Mixed Reality Rendering for 360° Panoramic Videos,IEEE TRANSACTIONS ON VISUALIZATION AND COMPUTER GRAPHICS, VOL. 23, NO. 4, APRIL 2017 
 

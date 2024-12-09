@@ -28,22 +28,25 @@ public class Slicenet2MaskOcclusion : MonoBehaviour
 
     void Start()
     {
+        //入力テクスチャを正しい出力が得られるように変換する
         inputtex = ConvertRenderTextureToTexture2D(inRentex);
+        //AIモデルに入力テクスチャを入れて出力の深度推定画像を得る
         Texture2D out_texture= model2Text(modelAsset, inputtex);
         out_texture=FlipTextureVertically(out_texture);
+        //デバック用に出力を表示
         mat.mainTexture = out_texture;
       
-        
+        //出力された深度画像と、入力の画像をもとに、各ピクセルの３D座標を計算しその位置にGPUInstancingを使用しキューブを生成する。
         Makeocclustion(out_texture, inputtex, 50f);
         boundingBox = new Bounds(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(100.0f, 100.0f, 100.0f));
-
     }
 
     void Update()
     {
+        // 生成したキューブを描画し続ける
         Graphics.DrawMeshInstancedIndirect(instanceMesh, subMeshIndex, instanceMaterial, boundingBox, argsBuffer);
     }
-
+    // 使用しているメモリを削除
     void OnDisable()
     {
         m_Worker.Dispose();

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 public class Slicenet2MaskOcclusion : MonoBehaviour
 {
-    // Model 
+    // Model parameter
     public ModelAsset modelAsset;
     public Texture2D inputtex;
     public RenderTexture inRentex;
@@ -14,7 +14,7 @@ public class Slicenet2MaskOcclusion : MonoBehaviour
     Tensor<float> tensor;
     public Material mat;
 
-    //GPU Instansing
+    //GPU Instansing parameter
 
     int instanceCount = 100000;
     public Mesh instanceMesh;
@@ -68,20 +68,20 @@ public class Slicenet2MaskOcclusion : MonoBehaviour
     }
     Texture2D ConvertRenderTextureToTexture2D(RenderTexture rt)
     {
-        // RenderTexture ‚ÌƒtƒH[ƒ}ƒbƒg‚É‡‚í‚¹‚½ Texture2D ‚ğì¬
+        // RenderTexture ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«åˆã‚ã›ãŸ Texture2D ã‚’ä½œæˆ
         Texture2D texture2D = new Texture2D(rt.width, rt.height, TextureFormat.RGBA32, false);
 
-        // Œ»İ‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğˆê“I‚É•Û‘¶
+        // ç¾åœ¨ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ä¸€æ™‚çš„ã«ä¿å­˜
         RenderTexture currentRT = RenderTexture.active;
 
-        // RenderTexture ‚ğƒAƒNƒeƒBƒu‚Éİ’è
+        // RenderTexture ã‚’ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã«è¨­å®š
         RenderTexture.active = rt;
 
-        // ƒsƒNƒZƒ‹ƒf[ƒ^‚ğ Texture2D ‚ÉƒRƒs[
+        // ãƒ”ã‚¯ã‚»ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’ Texture2D ã«ã‚³ãƒ”ãƒ¼
         texture2D.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
         texture2D.Apply();
 
-        // ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğŒ³‚É–ß‚·
+        // ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’å…ƒã«æˆ»ã™
         RenderTexture.active = currentRT;
 
         return texture2D;
@@ -91,7 +91,7 @@ public class Slicenet2MaskOcclusion : MonoBehaviour
         int width = original.width;
         int height = original.height;
 
-        // Œ³‚ÌƒsƒNƒZƒ‹ƒf[ƒ^‚ğæ“¾
+        // å…ƒã®ãƒ”ã‚¯ã‚»ãƒ«ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
         Color[] pixels = original.GetPixels();
         Color[] flippedPixels = new Color[pixels.Length];
 
@@ -99,7 +99,7 @@ public class Slicenet2MaskOcclusion : MonoBehaviour
         {
             for (int x = 0; x < width; x++)
             {
-                // ã‰º”½“]‚ÌƒCƒ“ƒfƒbƒNƒX‚ğŒvZ
+                // ä¸Šä¸‹åè»¢ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’è¨ˆç®—
                 int flippedIndex = (height - y - 1) * width + x;
                 int originalIndex = y * width + x;
 
@@ -107,7 +107,7 @@ public class Slicenet2MaskOcclusion : MonoBehaviour
             }
         }
 
-        // V‚µ‚¢ƒeƒNƒXƒ`ƒƒ‚ğì¬‚µ‚Ä”½“]‚µ‚½ƒsƒNƒZƒ‹‚ğİ’è
+        // æ–°ã—ã„ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ä½œæˆã—ã¦åè»¢ã—ãŸãƒ”ã‚¯ã‚»ãƒ«ã‚’è¨­å®š
         Texture2D flippedTexture = new Texture2D(width, height, original.format, false);
         flippedTexture.SetPixels(flippedPixels);
         flippedTexture.Apply();

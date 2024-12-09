@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CPURunEstimation : MonoBehaviour
 {
+    
     public ComputeShader cs;
     public RenderTexture LDRtex;
     GameObject[] LIghts;
@@ -33,46 +34,16 @@ public class CPURunEstimation : MonoBehaviour
             this.polar = polar;
         }
     }
-    // Start is called before the first frame update
     void Start()
-    {
-        //------------- Estimation-----------------
-        EstiVales estivalue = Estimation();
-
-        LIghts = new GameObject[estivalue.polar.Length];
-        Cubes = new GameObject[estivalue.polar.Length];
-
-
-        Vector4[] EstiPosition = new Vector4[width * height];
-        float lr = 0.3f, lg = 0.59f, lb = 0.11f;
-
-        for (int i = 1; i < estivalue.polar.Length; i++)
-        {
-            var p = estivalue.polar[i];
-
-            Vector3 position = PolarToCartesian(p.x, p.y);
-            Color color = new Color(estivalue.ELs[i].x, estivalue.ELs[i].y, estivalue.ELs[i].z, 1);
-            float intensity = Vector3.Dot(estivalue.ELs[i], new Vector3(lr, lg, lb));
-            LIghts[i] = CreateLight(position, color, light, intensity, parent);
-            Cubes[i] = CreateCube(position, color, Cube, parent);
-
-        }
-        for (int i = 1; i < estivalue.polar.Length; i++)
-        {
-
-            float intensity = Vector3.Dot(estivalue.ELs[i], new Vector3(lr, lg, lb));
-            Vector2 XYposition = Polar2XY(estivalue.polar[i].x, estivalue.polar[i].y, width, height);
-            EstiPosition[(int)XYposition.x + (int)XYposition.y * width] = new Vector4(intensity, 0, 0, 1);
-        }
-
+    {    
+        //推定光源位置の可視化用のテクスチャ
         ResultPositiontexture = new Texture2D(width, height, TextureFormat.RGB24, false);
-
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        // 直前の光源推定結果LIghtsとCubesの破棄
         for (int i = 0; i < LIghts.Length; i++)
         {
             if (LIghts[i] != null)
@@ -81,33 +52,37 @@ public class CPURunEstimation : MonoBehaviour
                 Destroy(Cubes[i]);
             }
         }
+        //光源推定　出力は全光源のPolar 極座標　と　ELs色
         EstiVales estivalue = Estimation();
-
+        // 光源結果を入れる　Lights：光源の強さ、位置　Cubes: 光源の方向　デバック用 
         LIghts = new GameObject[estivalue.polar.Length];
         Cubes = new GameObject[estivalue.polar.Length];
-
+        // デバック用に２Ｄでの光源位置を可視化するテクスチャ
         Vector4[] EstiPosition = new Vector4[width * height];
         float lr = 0.3f, lg = 0.59f, lb = 0.11f;
 
+        // 光源推定出力estivalueをもとにLights,Cubesに値を入れる
         for (int i = 1; i < estivalue.polar.Length; i++)
         {
             
-            
+            //光源の強さ
             float intensity = Vector3.Dot(estivalue.ELs[i], new Vector3(lr, lg, lb));
             
             
             if (intensity > 0.5f)
             {
-                intensity = Mathf.Min(1f, intensity);
-                var p = estivalue.polar[i];
-                Vector3 position = PolarToCartesian(p.x, p.y);
-                Color color = new Color(estivalue.ELs[i].x, estivalue.ELs[i].y, estivalue.ELs[i].z, 1);
+                intensity = Mathf.Min(1f, intensity);//強すぎる光を抑える（適当）
+                var p = estivalue.polar[i];//出力極座標
+                Vector3 position = PolarToCartesian(p.x, p.y);//極座標を３Ｄ座標にする
+                Color color = new Color(estivalue.ELs[i].x, estivalue.ELs[i].y, estivalue.ELs[i].z, 1);//光源の色ＥＬｓをColor変数にする
                 color.a = 1;
+                
                 Color Debugcolor = color;
-                LIghts[i] = CreateLight(position, color, light, intensity, parent);
+                
+                LIghts[i] = CreateLight(position, color, light, intensity, parent);//推定光源の座標、色、強さをもとにＵｎｉｔｙのライトを生成する
                 Debug.Log("light: " + i + " position: " + LIghts[i].transform + " intensity :" + intensity);
                 Debugcolor= Color.red;
-                Cubes[i] = CreateCube(position, Debugcolor, Cube, parent);
+                Cubes[i] = CreateCube(position, Debugcolor, Cube, parent);//デバック用のキューブを作成する　
             }
             
             
@@ -115,14 +90,12 @@ public class CPURunEstimation : MonoBehaviour
         }
         for (int i = 1; i < estivalue.polar.Length; i++)
         {
-
+            //デバック用に推定光源位置の2D位置をテクスチャで可視化
             float intensity = Vector3.Dot(estivalue.ELs[i], new Vector3(lr, lg, lb));
             Vector2 XYposition = Polar2XY(estivalue.polar[i].x, estivalue.polar[i].y, width, height);
             EstiPosition[(int)XYposition.x + (int)XYposition.y * width] = new Vector4(intensity, 0, 0, 1);
         }
-
-
-
+        //デバック用に推定光源位置の2D位置をテクスチャで可視化
         ApplyVector4ArrayToTexture(EstiPosition, ResultPositiontexture);
         ResultPositionPlane.GetComponent<Renderer>().material.mainTexture = ResultPositiontexture;
 

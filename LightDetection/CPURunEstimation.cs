@@ -274,31 +274,29 @@ public class CPURunEstimation : MonoBehaviour
     {
         Color[] colors = new Color[vectors.Length];
 
-        // Vector3��Color�ɕϊ� (x, y, z �� RGB �Ƀ}�b�s���O)
+       
         for (int i = 0; i < vectors.Length; i++)
         {
             Vector4 v = vectors[i];
             colors[i] = new Color(v.x, v.y, v.z, 1);
         }
 
-        // �e�N�X�`���ɐF�f�[�^��K�p
         tex.SetPixels(colors);
-        tex.Apply();  // Apply() ���Ă΂Ȃ��ƕύX�����f����Ȃ�
+        tex.Apply(); 
     }
     void ApplyIntArrayToTexture(int[] vectors, Texture2D tex)
     {
         Color[] colors = new Color[vectors.Length];
 
-        // Vector3��Color�ɕϊ� (x, y, z �� RGB �Ƀ}�b�s���O)
+        
         for (int i = 0; i < vectors.Length; i++)
         {
             int v = vectors[i];
             colors[i] = new Color(v, v, v, 1);
         }
 
-        // �e�N�X�`���ɐF�f�[�^��K�p
         tex.SetPixels(colors);
-        tex.Apply();  // Apply() ���Ă΂Ȃ��ƕύX�����f����Ȃ�
+        tex.Apply();  
     }
 
     Vector4[] InverseToneMapping(RenderTexture LDR)

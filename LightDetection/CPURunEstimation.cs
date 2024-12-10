@@ -115,23 +115,23 @@ public class CPURunEstimation : MonoBehaviour
         Light directionalLight = lightInstance.GetComponent<Light>();
         if (directionalLight != null)
         {
-            directionalLight.type = LightType.Directional;  // ���C�g�^�C�v���f�B���N�V���i���ɐݒ�
-            directionalLight.color = color;                 // ���C�g�̐F��ݒ�
-            directionalLight.intensity = intensity;         // �v�Z�������x���g�p
-            directionalLight.transform.LookAt(Vector3.zero); // ���_�Ɍ�����
+            directionalLight.type = LightType.Directional;  
+            directionalLight.color = color;                
+            directionalLight.intensity = intensity;        
+            directionalLight.transform.LookAt(Vector3.zero); 
             directionalLight.shadows = LightShadows.Soft;
         }
         return lightInstance;
     }
     public static Vector3 PolarToCartesian(float phi, float theta, float radius = 1.0f)
     {
-        // x = r * sin(��) * cos(��)
+        
         float x = radius * Mathf.Sin(theta) * Mathf.Cos(phi);
 
-        // y = r * cos(��)
+      
         float y = radius * Mathf.Cos(theta);
 
-        // z = r * sin(��) * sin(��)
+    
         float z = radius * Mathf.Sin(theta) * Mathf.Sin(phi);
 
         return new Vector3(x, y, z);
